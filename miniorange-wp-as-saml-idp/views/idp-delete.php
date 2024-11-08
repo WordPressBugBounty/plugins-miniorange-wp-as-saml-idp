@@ -16,6 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                             <hr class="mo-idp-add-new-sp-hr">
                             <br>';
 if ( isset( $sp ) && ! empty( $sp ) ) {
+        if ( ! $disabled ) {
+                echo '<div><form method="post" id="mo_idp_delete_sp_settings_form" action="' . esc_url( $post_url ) . '">
+                                    <input type="hidden" name="option" value="mo_idp_delete_sp_settings"/>
+                                    <input type="hidden" name="sp_id" value="' . esc_attr( $sp->id ) . '"/>';
+                                        wp_nonce_field( $idp_sp_settings_nonce );
+                echo '</form></div>';
+        }
 	echo '<div class="">
                                 <span class="mo-idp-mt-5 mo-idp-home-card-link" >
                                         Your SP configuration will be deleted forever. Are you sure you want to delete SP configuration for:
@@ -38,10 +45,3 @@ if ( isset( $sp ) && ! empty( $sp ) ) {
                                 onclick = "window.location=\'' . esc_url( $goback_url ) . '\'"/>';
 				echo '   </div>
                 </div>';
-if ( ! $disabled ) {
-	echo '<form method="post" id="mo_idp_delete_sp_settings_form" action="' . esc_url( $post_url ) . '">
-			    <input type="hidden" name="option" value="mo_idp_delete_sp_settings"/>
-			    <input type="hidden" name="sp_id" value="' . esc_attr( $sp->id ) . '"/>';
-				wp_nonce_field( $idp_sp_settings_nonce );
-	echo '</form>';
-}

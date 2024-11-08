@@ -11,7 +11,7 @@ use IDP\Helper\Utilities\TabDetails;
 use IDP\Helper\Utilities\Tabs;
 use IDP\SplClassLoader;
 
-define( 'MSI_VERSION', '1.15.6' );
+define( 'MSI_VERSION', '1.15.7' );
 define( 'MSI_DB_VERSION', '1.5' );
 define( 'MSI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MSI_URL', plugin_dir_url( __FILE__ ) );

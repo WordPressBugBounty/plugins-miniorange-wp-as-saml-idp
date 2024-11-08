@@ -3,8 +3,8 @@ Contributors: cyberlord92, nimeshatxecurify
 Donate link: https://plugins.miniorange.com/
 Tags: Login with WordPress, single sign on, SSO, identity provider, WordPress login, LMS, SAML IDP, Tableau, Moodle LMS Integration, Zoom, Nextcloud Login, Thinkific
 Requires at least: 4.8
-Tested up to: 6.6
-Stable tag: 1.15.6
+Tested up to: 6.7
+Stable tag: 1.15.7
 Requires PHP: 5.6
 License: MIT/Expat
 License URI: https://docs.miniorange.com/mit-license
@@ -152,6 +152,10 @@ Visit Help & FAQ section in the plugin OR email us at <a href="mailto:wpidpsuppo
 4. Attribute and Role mapping
 
 == Changelog ==
+
+= 1.15.7 = 
+* Compatibility with WordPress 6.7.
+* Improved security for SQL Queries executed by the plugin.
 
 = 1.15.6 =
 * Migrated the php fopen and unlink calls to relevant WP Filesystem calls
@@ -362,6 +366,10 @@ Visit Help & FAQ section in the plugin OR email us at <a href="mailto:wpidpsuppo
 * this is the first release.
 
 == Upgrade Notice ==
+
+= 1.15.7 = 
+* Compatibility with WordPress 6.7.
+* Improved security for SQL Queries executed by the plugin.
 
 = 1.15.6 =
 * Migrated the php fopen and unlink calls to relevant WP Filesystem calls

@@ -3,7 +3,7 @@
  * Plugin Name: Login using WordPress Users
  * Plugin URI: https://plugins.miniorange.com/wordpress-saml-idp
  * Description: Convert your WordPress into an IDP.
- * Version: 1.15.6
+ * Version: 1.15.7
  * Author: miniOrange
  * Author URI: https://plugins.miniorange.com/
  * License: MIT/Expat

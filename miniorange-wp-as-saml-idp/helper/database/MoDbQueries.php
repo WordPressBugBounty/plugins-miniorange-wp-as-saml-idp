@@ -202,8 +202,6 @@ final class MoDbQueries {
 	 */
 	private function mo_update_protocol_type() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_protocol_type longtext NOT NULL', $this->sp_data_table_name ) );
-		// $wpdb->query( $wpdb->prepare( 'UPDATE %i SET mo_idp_protocol_type = "SAML"', $this->sp_data_table_name ) );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' ADD COLUMN mo_idp_protocol_type longtext NOT NULL' );
 		$wpdb->query( 'UPDATE ' . $this->sp_data_table_name . " SET mo_idp_protocol_type = 'SAML'" );
 	}
@@ -216,8 +214,6 @@ final class MoDbQueries {
 	 */
 	private function mo_update_logout() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_logout_url longtext NULL', $this->sp_data_table_name ) );
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_logout_binding_type varchar(15) DEFAULT "HttpRedirect" NOT NULL', $this->sp_data_table_name ) );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' ADD COLUMN mo_idp_logout_url longtext NULL' );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . " ADD COLUMN mo_idp_logout_binding_type varchar(15) DEFAULT 'HttpRedirect' NOT NULL" );
 	}
@@ -230,8 +226,6 @@ final class MoDbQueries {
 	 */
 	private function mo_update_cert() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_cert_encrypt longtext NULL', $this->sp_data_table_name ) );
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_encrypted_assertion smallint NULL', $this->sp_data_table_name ) );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' ADD COLUMN mo_idp_cert_encrypt longtext NULL' );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' ADD COLUMN mo_idp_encrypted_assertion smallint NULL' );
 	}
@@ -244,7 +238,6 @@ final class MoDbQueries {
 	 */
 	private function mo_update_relay() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_idp_default_relayState longtext NULL', $this->sp_data_table_name ) );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' ADD COLUMN mo_idp_default_relayState longtext NULL' );
 	}
 
@@ -256,8 +249,6 @@ final class MoDbQueries {
 	 */
 	private function mo_update_custom_attr() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i ADD COLUMN mo_attr_type smallint DEFAULT 0 NOT NULL', $this->sp_attr_table_name ) );
-		// $wpdb->update( $this->sp_attr_table_name, array( 'mo_attr_type' => '1' ), array( 'mo_sp_attr_name' => 'groupMapName' ) );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_attr_table_name . ' ADD COLUMN mo_attr_type smallint DEFAULT 0 NOT NULL' );
 		$wpdb->update( $this->sp_attr_table_name, array( 'mo_attr_type' => '1' ), array( 'mo_sp_attr_name' => 'groupMapName' ) );
 	}
@@ -269,7 +260,6 @@ final class MoDbQueries {
 	 */
 	public function get_sp_list() {
 		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i', $this->sp_data_table_name ) );
 		return $wpdb->get_results( 'SELECT * FROM ' . $this->sp_data_table_name );
 	}
 
@@ -282,8 +272,7 @@ final class MoDbQueries {
 	 */
 	public function get_sp_data( $id ) {
 		global $wpdb;
-		// return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id=%s', array( $this->sp_data_table_name, $id ) ) );
-		return $wpdb->get_row( 'SELECT * FROM ' . $this->sp_data_table_name . ' WHERE id=' . $id );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $this->sp_data_table_name . ' WHERE id=%s', $id ) );
 	}
 
 	/**
@@ -293,37 +282,8 @@ final class MoDbQueries {
 	 */
 	public function get_sp_count() {
 		global $wpdb;
-		// return $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i', $this->sp_data_table_name ) );
 		$sql = 'SELECT COUNT(*) FROM ' . $this->sp_data_table_name;
 		return $wpdb->get_var( $sql );
-	}
-
-	/**
-	 * Get all the profile attribute mapping done for the
-	 * SP from the Attribute table. Doesn't return the role
-	 * mapping or the custom attributes. There are separate
-	 * functions for that.
-	 *
-	 * @param string $id References the ID of the SP in the database.
-	 * @return array|object|null
-	 */
-	public function get_sp_attributes( $id ) {
-		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_sp_id = %s AND mo_sp_attr_name <> "groupMapName" AND mo_attr_type = 0', array( $this->sp_attr_table_name, $id ) ) );
-		return $wpdb->get_results( 'SELECT * FROM ' . $this->sp_attr_table_name . " WHERE mo_sp_id = $id AND mo_sp_attr_name <> 'groupMapName' AND mo_attr_type = 0" );
-	}
-
-	/**
-	 * Get all the Role attribute mapping done for the
-	 * SP from the Attribute table.
-	 *
-	 * @param string $id References the ID of the SP in the database.
-	 * @return array|object|null|void
-	 */
-	public function get_sp_role_attribute( $id ) {
-		global $wpdb;
-		// return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_sp_id = %s AND mo_sp_attr_name = "groupMapName"', array( $this->sp_attr_table_name, $id ) ) );
-		return $wpdb->get_row( 'SELECT * FROM ' . $this->sp_attr_table_name . " WHERE mo_sp_id = $id AND mo_sp_attr_name = 'groupMapName'" );
 	}
 
 	/**
@@ -335,8 +295,7 @@ final class MoDbQueries {
 	 */
 	public function get_all_sp_attributes( $id ) {
 		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_sp_id = %s', array( $this->sp_attr_table_name, $id ) ) );
-		return $wpdb->get_results( 'SELECT * FROM ' . $this->sp_attr_table_name . " WHERE mo_sp_id = $id " );
+		return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $this->sp_attr_table_name . ' WHERE mo_sp_id = %s', $id ) );
 	}
 
 	/**
@@ -348,8 +307,7 @@ final class MoDbQueries {
 	 */
 	public function get_sp_from_issuer( $issuer ) {
 		global $wpdb;
-		// return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_idp_sp_issuer = %s', array( $this->sp_attr_table_name, $issuer ) ) );
-		return $wpdb->get_row( 'SELECT * FROM ' . $this->sp_data_table_name . " WHERE mo_idp_sp_issuer = '$issuer'" );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $this->sp_data_table_name . ' WHERE mo_idp_sp_issuer = %s', $issuer ) );
 	}
 
 	/**
@@ -361,8 +319,7 @@ final class MoDbQueries {
 	 */
 	public function get_sp_from_name( $name ) {
 		global $wpdb;
-		// return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_idp_sp_name = %s', array( $this->sp_attr_table_name, $name ) ) );
-		return $wpdb->get_row( 'SELECT * FROM ' . $this->sp_data_table_name . " WHERE mo_idp_sp_name = '$name'" );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $this->sp_data_table_name . ' WHERE mo_idp_sp_name = %s',  $name ) );
 	}
 
 	/**
@@ -374,8 +331,7 @@ final class MoDbQueries {
 	 */
 	public function get_sp_from_acs( $acs ) {
 		global $wpdb;
-		// return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_idp_acs_url = %s', array( $this->sp_attr_table_name, $acs ) ) );
-		return $wpdb->get_row( 'SELECT * FROM ' . $this->sp_data_table_name . " WHERE mo_idp_acs_url = '$acs'" );
+		return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $this->sp_data_table_name . ' WHERE mo_idp_acs_url = %s', $acs ) );
 	}
 
 	/**
@@ -443,8 +399,6 @@ final class MoDbQueries {
 	 */
 	public function update_metadata_data() {
 		global $wpdb;
-		// $wpdb->query( $wpdb->prepare( 'DELETE FROM %i', $this->sp_data_table_name ) );
-		// $wpdb->query( $wpdb->prepare( 'ALTER TABLE %i AUTO_INCREMENT=0', $this->sp_data_table_name ) );
 		$wpdb->query( 'DELETE FROM ' . $this->sp_data_table_name );
 		$wpdb->query( 'ALTER TABLE ' . $this->sp_data_table_name . ' AUTO_INCREMENT=0' );
 		$wpdb->query( 'DELETE FROM ' . $this->public_key_table );
@@ -489,7 +443,6 @@ final class MoDbQueries {
 		return $wpdb->delete( $this->public_key_table, $where_format );
 	}
 
-
 	/**
 	 * Deletes the SP attribute data from the Attribute table.
 	 *
@@ -502,54 +455,6 @@ final class MoDbQueries {
 	}
 
 	/**
-	 * Insert the SP attribute data into Attribute table.
-	 *
-	 * @param array $data_attr References the data to be put in the table.
-	 * @return void
-	 */
-	public function insert_sp_attributes( $data_attr ) {
-		global $wpdb;
-		$wpdb->insert( $this->sp_attr_table_name, $data_attr );
-	}
-
-	/**
-	 * Fetch the Custom Attributes for the SP from the Attribute
-	 * Table.
-	 *
-	 * @param string $id References the ID of the SP in the database.
-	 * @return array|object|null
-	 */
-	public function get_custom_sp_attr( $id ) {
-		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i WHERE mo_sp_id = %s AND mo_attr_type = 2', array( $this->sp_attr_table_name, $id ) ) );
-		return $wpdb->get_results( 'SELECT * FROM ' . $this->sp_attr_table_name . " WHERE mo_sp_id = $id AND mo_attr_type = 2" );
-	}
-
-	/**
-	 * Fetch the number of users who have performed SSO using the plugin.
-	 * Checks the user_meta table for users who have mo_idp_user_type
-	 * as a meta key.
-	 *
-	 * @return string|null
-	 */
-	public function get_users() {
-		global $wpdb;
-		// return $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM %i WHERE meta_key="mo_idp_user_type"', $this->user_meta_table ) );
-		return $wpdb->get_var( 'SELECT COUNT(*) FROM ' . $wpdb->prefix . "usermeta WHERE meta_key='mo_idp_user_type'" );
-	}
-
-	/**
-	 * Get protocol type from SP data table.
-	 *
-	 * @return array|object|null
-	 */
-	public function get_protocol() {
-		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT mo_idp_protocol_type FROM %i', $this->sp_data_table_name ) );
-		return $wpdb->get_results( 'SELECT mo_idp_protocol_type FROM ' . $this->sp_data_table_name );
-	}
-
-	/**
 	 * Get the distinct unique meta keys from the user_meta table
 	 * to be shown in the attributes dropdown.
 	 *
@@ -557,7 +462,6 @@ final class MoDbQueries {
 	 */
 	public function get_distinct_meta_attributes() {
 		global $wpdb;
-		// return $wpdb->get_results( $wpdb->prepare( 'SELECT DISTINCT meta_key FROM %i', $this->user_meta_table ) );
 		return $wpdb->get_results( 'SELECT DISTINCT meta_key FROM ' . $this->user_meta_table );
 	}
 }
